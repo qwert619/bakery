@@ -4,6 +4,8 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 export const Auth = () => {
     return (
     <div className="auth">
@@ -24,7 +26,7 @@ const Login = () => {
     const onSubmit = async (event) => {
         event.preventDefault();
         try{
-            const response = await axios.post("http://localhost:3001/auth/login", {username, password});
+            const response = await axios.post(`${apiUrl}/auth/login`, {username, password});
             setCookies("access_token", response.data.token);
             window.localStorage.setItem("userID", response.data.userID);
             navigate("/");
@@ -49,7 +51,7 @@ const Register = () => {
     const onSubmit = async (event) => {
         event.preventDefault();
         try{
-            const res = await axios.post("http://localhost:3001/auth/register", {username, password});
+            const res = await axios.post(`${apiUrl}/auth/register`, {username, password});
             alert(res.data.message);
         } catch (err) {
             console.error(err);

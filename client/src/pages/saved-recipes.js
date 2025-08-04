@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useGetUserID } from '../hooks/useGetUserId';
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 export const SavedRecipes = () => {
     const [savedRecipes, setSavedRecipes] = useState([]);
 
@@ -10,7 +12,7 @@ export const SavedRecipes = () => {
     useEffect(() => {
         const fetchSavedRecipes = async () => {
             try {
-                const recipes = await axios.get(`http://localhost:3001/recipes/savedRecipes/${userID}`);
+                const recipes = await axios.get(`${apiUrl}/recipes/savedRecipes/${userID}`);
                 setSavedRecipes(recipes.data.savedRecipes);
             } catch (err) {
                 console.error("Error fetching recipes:", err);
@@ -21,7 +23,7 @@ export const SavedRecipes = () => {
 
     const removeRecipe = async (recipeID) => {
         try {
-            const response = await axios.delete(`http://localhost:3001/recipes/savedRecipes/${userID}/${recipeID}`);
+            const response = await axios.delete(`${apiUrl}/recipes/savedRecipes/${userID}/${recipeID}`);
             console.log(response.data);
             // Update the local state by filtering out the removed recipe
             setSavedRecipes(savedRecipes.filter(recipe => recipe._id !== recipeID));

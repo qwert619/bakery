@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useGetUserID } from '../hooks/useGetUserId';
 import { useCookies } from 'react-cookie';
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 export const Home = () => {
     const [recipes, setRecipes] = useState([]);
     const [savedRecipes, setSavedRecipes] = useState([]);
@@ -12,7 +14,7 @@ export const Home = () => {
     useEffect(() => {
         const fetchRecipes = async () => {
             try {
-                const recipes = await axios.get("http://localhost:3001/recipes");
+                const recipes = await axios.get(`${apiUrl}/recipes`);
                 setRecipes(recipes.data);
             } catch (err) {
                 console.error("Error fetching recipes:", err);
@@ -21,7 +23,7 @@ export const Home = () => {
 
         const fetchSavedRecipes = async () => {
             try {
-                const recipes = await axios.get(`http://localhost:3001/recipes/savedRecipes/ids/${userID}`);
+                const recipes = await axios.get(`${apiUrl}/recipes/savedRecipes/ids/${userID}`);
                 setSavedRecipes(recipes.data.savedRecipes);
             } catch (err) {
                 console.error("Error fetching saved recipes:", err);
@@ -36,7 +38,7 @@ export const Home = () => {
 
     const saveRecipes = async (recipeID) => {
         try {
-            const response = await axios.put("http://localhost:3001/recipes", {recipeID, userID},
+            const response = await axios.put(`${apiUrl}/recipes`, {recipeID, userID},
                 {headers: {authorization: cookies.access_token}});
             setSavedRecipes(response.data.savedRecipes);
         } catch (err) {
