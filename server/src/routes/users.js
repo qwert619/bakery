@@ -36,7 +36,7 @@ router.post("/login", async (req, res) => {
         return res.json({ message: "Invalid password" });
     }
 
-    const token = jwt.sign({id: user._id}, "secretkey")
+    const token = jwt.sign({id: user._id}, process.env.JWT_SECRET)
     res.json({ token, userID: user._id});
 })
 
@@ -45,7 +45,7 @@ export {router as userRouter};
 export const verifyToken = (req, res, next) => {
     const token = req.headers.authorization;
     if (token) {
-        jwt.verify(token, "secretkey", (err) => {
+        jwt.verify(token, process.env.JWT_SECRET, (err) => {
             if (err) return res.status(403).json({ message: "Invalid token" });
             next();
         });

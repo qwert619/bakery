@@ -2,12 +2,19 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
+import path from "path";
+
+// Configure dotenv
+dotenv.config();
 
 import { userRouter } from "./routes/users.js";
 import { recipesRouter } from "./routes/recipes.js";
 
 const app = express();
-const mongooseClusterMern = "mongodb+srv://ebm619:Ciloshiga314@clustermern.mfu8zym.mongodb.net/clustermern?retryWrites=true&w=majority&appName=ClusterMERN"
+const PORT = process.env.PORT || 3001;
+const MONGODB_URI = process.env.MONGODB_URI;
+
+const __dirname = path.resolve();
 
 
 app.use(express.json());
@@ -15,7 +22,8 @@ app.use(cors());
 
 app.use("/auth", userRouter);
 app.use("/recipes", recipesRouter);
+app.get("/healthz", (req, res) => res.send("OK"));
 
-mongoose.connect(mongooseClusterMern)
+mongoose.connect(MONGODB_URI)
 
-app.listen(3001, () => console.log("Server started on port 3001"))
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
