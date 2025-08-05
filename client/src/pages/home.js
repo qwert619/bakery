@@ -46,7 +46,7 @@ export const Home = () => {
         }
     };
 
-    const isRecipeSaved = (recipeID) => savedRecipes.includes(recipeID);
+    const isRecipeSaved = (recipeID) => savedRecipes && savedRecipes.includes(recipeID);
 
     return (
         <div className="home">
