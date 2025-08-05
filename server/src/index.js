@@ -16,9 +16,16 @@ const MONGODB_URI = process.env.MONGODB_URI;
 
 const __dirname = path.resolve();
 
+const allowedOrigins = [
+  "https://bakerypage.onrender.com", // your frontend URL
+  "http://localhost:3000"            // for local development
+];
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true,
+}));
 
 app.use("/auth", userRouter);
 app.use("/recipes", recipesRouter);
